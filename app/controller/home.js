@@ -1,0 +1,22 @@
+'use strict';
+
+const Controller = require('egg').Controller;
+const { flatMongoResponse, extractCreateAtUpdateAt } = require('../util/mongoUtil');
+
+class HomeController extends Controller {
+  async index() {
+    const Abstract = this.ctx.model.Abstract;
+    const articles = await Abstract.find({
+      title: '博客性能优化之静态资源优化',
+    }).select({
+      title: 1,
+      categories: 1,
+      meta: 1,
+      link: 1,
+    }).exec();
+    this.ctx.body = articles.map(article => flatMongoResponse(article))
+      .map(article => extractCreateAtUpdateAt(article));
+  }
+}
+
+module.exports = HomeController;
