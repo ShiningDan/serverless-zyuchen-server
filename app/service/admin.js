@@ -20,12 +20,29 @@ class AdminService extends Serivce {
   // async upload() {}
 
   // 根据文章的 id 来获得该文章原始的内容
-  async getArticle() {
-    // const Article = this.ctx.model.Article;
-    // console.log(id);
-    // const article = await Article.findById(id);
-    // console.log(article);
-    return 'v';
+  async getArticle(id) {
+    const { ctx } = this;
+    const Article = ctx.model.Article;
+    const Abstract = ctx.model.Abstract;
+    const article = await Article.findById(id)
+      .select({
+        title: 1,
+        md: 1,
+        link: 1,
+        series: 1,
+        categories: 1,
+        createAt: 1,
+        updateAt: 1,
+      }).exec();
+    const { title } = article;
+    const abstract = await Abstract.findOne({
+      title,
+    }).select({
+      abstract: 1,
+    }).exec();
+    const payload = extractCreateAtUpdateAt(flatMongoResponse(article));
+    payload.abstract = abstract.abstract;
+    return payload;
   }
 }
 
