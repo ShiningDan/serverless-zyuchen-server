@@ -31,8 +31,7 @@ class AdminService extends Serivce {
         link: 1,
         series: 1,
         categories: 1,
-        createAt: 1,
-        updateAt: 1,
+        meta: 1,
       }).exec();
     const { title } = article;
     const abstract = await Abstract.findOne({
@@ -43,6 +42,24 @@ class AdminService extends Serivce {
     const payload = extractCreateAtUpdateAt(flatMongoResponse(article));
     payload.abstract = abstract.abstract;
     return payload;
+  }
+
+  async getCategories() {
+    const Category = this.ctx.model.Category;
+    const categories = await Category.find({})
+      .select({
+        name: 1,
+      }).exec();
+    return categories;
+  }
+
+  async getSeries() {
+    const Series = this.ctx.model.Series;
+    const series = await Series.find({})
+      .select({
+        name: 1,
+      }).exec();
+    return series;
   }
 }
 
