@@ -4,6 +4,11 @@ const Controller = require('egg').Controller;
 const { flatMongoResponse, extractCreateAtUpdateAt } = require('../util/mongoUtil');
 
 class HomeController extends Controller {
+  async list() {
+    const { ctx } = this;
+    ctx.body = await ctx.service.home.list();
+  }
+
   async index() {
     const Abstract = this.ctx.model.Abstract;
     const articles = await Abstract.find({

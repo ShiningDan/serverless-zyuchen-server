@@ -15,9 +15,6 @@ class AdminService extends Serivce {
     return articles.map(article => flatMongoResponse(article))
       .map(article => extractCreateAtUpdateAt(article));
   }
-  // 在 upload 的时候需要判断是否和现有的文章重合
-  // 如果重合，需要删除现有的文章，以及相关的内容
-  // async upload() {}
 
   // 根据文章的 id 来获得该文章原始的内容
   async getArticle(id) {
