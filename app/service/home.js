@@ -86,6 +86,18 @@ class HomeService extends Serivce {
     }
     return articleArray;
   }
+
+  async series() {
+    const { ctx } = this;
+    const Series = ctx.model.Series;
+    const series = await Series.find({}).populate('articles', [ 'title', 'link', 'meta.createAt' ]);
+    series.forEach(function(s) {
+      s.articles = s.articles.sort(function(a, b) {
+        return b.meta.createAt - a.meta.createAt;
+      });
+    });
+    return series;
+  }
 }
 
 module.exports = HomeService;

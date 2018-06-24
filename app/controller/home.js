@@ -29,9 +29,13 @@ class HomeController extends Controller {
   }
 
   async archives() {
-    console.log('archives');
     const { ctx } = this;
     ctx.body = await ctx.service.home.archives();
+  }
+
+  async series() {
+    const { ctx } = this;
+    ctx.body = await ctx.service.home.series();
   }
 }
 
