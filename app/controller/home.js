@@ -9,6 +9,11 @@ class HomeController extends Controller {
     ctx.body = await ctx.service.home.list();
   }
 
+  async article() {
+    const { ctx } = this;
+    ctx.body = await ctx.service.home.article(ctx.path);
+  }
+
   async index() {
     const Abstract = this.ctx.model.Abstract;
     const articles = await Abstract.find({
@@ -21,6 +26,12 @@ class HomeController extends Controller {
     }).exec();
     this.ctx.body = articles.map(article => flatMongoResponse(article))
       .map(article => extractCreateAtUpdateAt(article));
+  }
+
+  async archives() {
+    console.log('archives');
+    const { ctx } = this;
+    ctx.body = await ctx.service.home.archives();
   }
 }
 
