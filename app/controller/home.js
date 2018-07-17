@@ -6,7 +6,8 @@ const { flatMongoResponse, extractCreateAtUpdateAt } = require('../util/mongoUti
 class HomeController extends Controller {
   async list() {
     const { ctx } = this;
-    ctx.body = await ctx.service.home.list();
+    const { lt, gt } = ctx.query;
+    ctx.body = await ctx.service.home.list(lt, gt);
   }
 
   async article() {

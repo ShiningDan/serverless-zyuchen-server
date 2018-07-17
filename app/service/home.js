@@ -1,18 +1,56 @@
 'use strict';
 const Serivce = require('egg').Service;
 const { flatMongoResponse, extractCreateAtUpdateAt } = require('../util/mongoUtil');
+const PAGE_COUNT = 5;
 
 class HomeService extends Serivce {
-  async list() {
+  async list(lt, gt) {
     const { ctx } = this;
     const Abstract = ctx.model.Abstract;
-    const abstracts = await Abstract.find({})
-      .select({
-        title: 1,
-        abstract: 1,
-        meta: 1,
-        link: 1,
-      }).exec();
+    let abstracts;
+    // id 越大，代表文章越新
+    if (gt) {
+      abstracts = await Abstract.find({
+        _id: {
+          $gt: gt,
+        },
+      })
+        .limit(PAGE_COUNT + 1)
+        .sort({ _id: -1 })
+        .select({
+          title: 1,
+          abstract: 1,
+          meta: 1,
+          link: 1,
+        })
+        .exec();
+    } else if (lt) {
+      abstracts = await Abstract.find({
+        _id: {
+          $lt: lt,
+        },
+      })
+        .sort({ _id: -1 })
+        .limit(PAGE_COUNT + 1)
+        .select({
+          title: 1,
+          abstract: 1,
+          meta: 1,
+          link: 1,
+        })
+        .exec();
+    } else {
+      abstracts = await Abstract.find({})
+        .sort({ _id: -1 })
+        .limit(PAGE_COUNT + 1)
+        .select({
+          title: 1,
+          abstract: 1,
+          meta: 1,
+          link: 1,
+        })
+        .exec();
+    }
     return abstracts.map(abstract => flatMongoResponse(abstract))
       .map(abstract => extractCreateAtUpdateAt(abstract));
   }
