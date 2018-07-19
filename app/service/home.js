@@ -9,6 +9,7 @@ class HomeService extends Serivce {
     const Abstract = ctx.model.Abstract;
     let abstracts;
     // id 越大，代表文章越新
+    // gt 返回的结果有问题，需要调试
     if (gt) {
       abstracts = await Abstract.find({
         _id: {
@@ -16,7 +17,7 @@ class HomeService extends Serivce {
         },
       })
         .limit(PAGE_COUNT + 1)
-        .sort({ _id: -1 })
+        // .sort({ _id: -1 })
         .select({
           title: 1,
           abstract: 1,
@@ -24,6 +25,14 @@ class HomeService extends Serivce {
           link: 1,
         })
         .exec();
+      if (abstracts.length === PAGE_COUNT + 1) {
+        // 将前 length - 1 项翻转，补上最后一项
+        const last = abstracts[PAGE_COUNT];
+        const notLast = abstracts.slice(0, PAGE_COUNT);
+        abstracts = notLast.reverse().concat(last);
+      } else {
+        abstracts = abstracts.reverse();
+      }
     } else if (lt) {
       abstracts = await Abstract.find({
         _id: {
