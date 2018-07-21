@@ -78,6 +78,49 @@ class HomeService extends Serivce {
     return flatMongoResponse(extractCreateAtUpdateAt(article));
   }
 
+  async articleSeries(series) {
+    const { ctx } = this;
+    const Series = ctx.model.Series;
+    const result = await Series.findOne({ name: series })
+      .limit(10).populate('articles', [ 'title', 'link', 'meta.createAt' ]);
+    return result.articles;
+  }
+
+  async articleNav(id) {
+    const { ctx } = this;
+    const Article = ctx.model.Article;
+    let articleOld = Article.find({
+      _id: { $gt: id },
+    })
+      .limit(1)
+      .select({
+        link: 1,
+        title: 1,
+      })
+      .exec();
+    let articleNew = Article.find({
+      _id: { $lt: id },
+    })
+      .sort({
+        _id: -1,
+      })
+      .limit(1)
+      .select({
+        link: 1,
+        title: 1,
+      })
+      .exec();
+    [ articleOld, articleNew ] = await Promise.all([ articleOld, articleNew ]);
+    const result = {};
+    if (articleOld.length > 0) {
+      result.articleOld = articleOld[0];
+    }
+    if (articleNew.length > 0) {
+      result.articleNew = articleNew[0];
+    }
+    return result;
+  }
+
   async archives() {
     const { ctx } = this;
     const articles = {};

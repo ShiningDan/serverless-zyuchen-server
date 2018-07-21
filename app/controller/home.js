@@ -15,6 +15,22 @@ class HomeController extends Controller {
     ctx.body = await ctx.service.home.article(ctx.path);
   }
 
+  async articleNav() {
+    const { ctx } = this;
+    const { id } = ctx.query;
+    ctx.body = await ctx.service.home.articleNav(id);
+  }
+
+  async articleSeries() {
+    const { ctx } = this;
+    const { series } = ctx.query;
+    if (series) {
+      ctx.body = await ctx.service.home.articleSeries(series);
+    } else {
+      ctx.body = [];
+    }
+  }
+
   async index() {
     const Abstract = this.ctx.model.Abstract;
     const articles = await Abstract.find({

@@ -9,6 +9,8 @@ module.exports = app => {
   router.get('/archives', controller.home.archives);
   router.get('/series', controller.home.series);
   router.get('/post/:id', controller.home.article);
+  router.get('/articleNav', controller.home.articleNav);
+  router.get('/articleSeries', controller.home.articleSeries);
 
   // Admin
   router.get('/admin/list', controller.admin.list);
