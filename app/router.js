@@ -17,4 +17,7 @@ module.exports = app => {
   router.get('/admin/upload/:id', controller.admin.getArticle);
   router.get('/admin/categories', controller.admin.getCategories);
   router.get('/admin/series', controller.admin.getSeries);
+  router.post('/admin/create', controller.admin.create);
+  router.post('/admin/login', controller.admin.login);
+  router.get('/admin/checkLogin', controller.admin.checkLogin);
 };

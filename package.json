@@ -7,7 +7,9 @@
     "egg": "^2.2.1",
     "egg-cors": "^2.0.0",
     "egg-mongoose": "^2.2.1",
-    "egg-scripts": "^2.5.0"
+    "egg-scripts": "^2.5.0",
+    "markdown-toc": "^1.2.0",
+    "marked": "^0.4.0"
   },
   "devDependencies": {
     "autod": "^3.0.1",

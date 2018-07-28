@@ -18,8 +18,17 @@ module.exports = appInfo => {
   };
 
   config.cors = {
-    origin: 'http://localhost:3000',
+    origin: 'http://a.sankuai.com:3000',
+    credentials: true,
   };
+
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+  };
+
+  config.keys = 'shiningdan';
 
   return config;
 };
