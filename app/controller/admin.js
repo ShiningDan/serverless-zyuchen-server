@@ -4,6 +4,10 @@ const Controller = require('egg').Controller;
 
 class AdminController extends Controller {
 
+  async alive() {
+    this.ctx.body = true;
+  }
+
   async login() {
     const { ctx } = this;
     const { name, password } = ctx.request.body;
